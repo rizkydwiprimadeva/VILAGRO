@@ -35,9 +35,18 @@
                 <span class="sm:hidden">Diagnosa</span>
             </a>
 
-            <div class="hidden h-9 w-9 items-center justify-center rounded-full bg-primary-fixed text-primary sm:flex" title="Sistem AI Online" aria-label="Sistem AI online">
-                <span class="material-symbols-outlined text-[19px]" aria-hidden="true">smart_toy</span>
-            </div>
+            @guest
+                <div class="hidden h-9 w-9 items-center justify-center rounded-full bg-primary-fixed text-primary sm:flex" title="Sistem AI Online" aria-label="Sistem AI online">
+                    <span class="material-symbols-outlined text-[19px]" aria-hidden="true">smart_toy</span>
+                </div>
+            @else
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="flex h-10 w-10 items-center justify-center rounded-lg border border-outline-variant/70 text-primary transition hover:bg-surface-container-low" title="Keluar" aria-label="Keluar">
+                        <span class="material-symbols-outlined text-[20px]" aria-hidden="true">logout</span>
+                    </button>
+                </form>
+            @endguest
         </div>
     </div>
 </header>

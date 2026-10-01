@@ -96,7 +96,7 @@
 
             <p class="mt-6 text-center text-sm text-gray-600">
                 Tidak punya akun?
-                <a href="#" class="font-semibold text-[#04342a] hover:underline">Daftar Disini</a>
+                <a href="{{ route('register') }}" class="font-semibold text-[#04342a] hover:underline">Daftar Disini</a>
             </p>
         </div>
     </div>
