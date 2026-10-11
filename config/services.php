@@ -36,8 +36,9 @@ return [
     ],
 
     'ai' => [
-    'url' => env('AI_SERVICE_URL', 'http://127.0.0.1:5001'),
-
-],
+        'url' => env('AI_SERVICE_URL', 'http://127.0.0.1:5001'),
+        'inference_confidence' => (float) env('AI_INFERENCE_CONFIDENCE', 0.25),
+        'minimum_confidence' => (float) env('AI_MINIMUM_CONFIDENCE', 0.65),
+    ],
 
 ];

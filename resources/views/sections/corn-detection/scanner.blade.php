@@ -12,13 +12,13 @@
                         Scanner &amp; Diagnostic Tool Daun Jagung
                     </h2>
                     <p class="font-body-md text-body-md text-on-surface-variant max-w-2xl mt-1">
-                        Unggah foto daun, batang, atau tongkol jagung yang bergejala sakit, atau klik salah satu sampel foto uji klinis di bawah untuk simulasi langsung.
+                        Model lokal mengenali busuk batang, hawar daun, dan bulai. Hasil tanpa deteksi tidak berarti tanaman sehat.
                     </p>
                 </div>
                 <div class="flex items-center gap-2">
                     <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-primary-fixed text-primary" id="ai-status-badge">
                         <span class="w-2 h-2 rounded-full bg-primary inline-block mr-1.5 animate-pulse"></span>
-                        AI Cloud Model Siap Menganalisis
+                        Model Lokal Siap Menganalisis
                     </span>
                 </div>
             </div>
@@ -26,8 +26,6 @@
             {{-- FORM WRAPPER --}}
             <form action="{{ route('corn.detect') }}" method="POST" enctype="multipart/form-data" id="corn-detection-form">
                 @csrf
-                <input type="hidden" name="conf" id="conf-input" value="0.25">
-
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-lg items-start">
 
                     <div class="lg:col-span-6 flex flex-col space-y-space-md">
@@ -76,48 +74,24 @@
 
                         <div>
                             <div class="flex items-center justify-between mb-2">
-                                <span class="font-label-sm text-label-sm font-bold uppercase tracking-wider text-secondary">Uji Coba Cepat (Pilih Sampel Preset):</span>
-                                <span class="text-[11px] text-outline">Klik salah satu untuk diagnosa</span>
+                                <span class="font-label-sm text-label-sm font-bold uppercase tracking-wider text-secondary">Sampel Uji yang Tersedia:</span>
+                                <span class="text-[11px] text-outline">Hasil tetap ditentukan model</span>
                             </div>
-                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-space-xs">
-                                {{-- Preset 1: Bulai → downy_mildew --}}
-                                <button class="preset-btn p-2 rounded-xl border border-surface-container-highest hover:border-secondary bg-surface-container-low hover:bg-surface-container text-left transition-all group flex flex-col justify-between h-24" data-class="downy_mildew" type="button">
-                                    <div class="flex items-center justify-between w-full">
-                                        <span class="font-label-sm text-label-sm font-bold text-primary group-hover:text-secondary truncate">Penyakit Bulai</span>
-                                        <span class="material-symbols-outlined text-[16px] text-secondary">coronavirus</span>
-                                    </div>
-                                    <p class="text-[11px] text-on-surface-variant leading-tight">Peronosclerospora (Bercak Kuning Garis)</p>
-                                    <span class="text-[10px] font-semibold text-secondary-container bg-surface-container-highest px-1.5 py-0.5 rounded self-start">Akurasi 90.6%</span>
-                                </button>
-
-                                {{-- Preset 2: Busuk Batang → rotten_stalk --}}
+                            <div class="grid grid-cols-2 gap-space-xs">
                                 <button class="preset-btn p-2 rounded-xl border border-surface-container-highest hover:border-secondary bg-surface-container-low hover:bg-surface-container text-left transition-all group flex flex-col justify-between h-24" data-class="rotten_stalk" type="button">
                                     <div class="flex items-center justify-between w-full">
                                         <span class="font-label-sm text-label-sm font-bold text-primary group-hover:text-secondary truncate">Busuk Batang</span>
                                         <span class="material-symbols-outlined text-[16px] text-secondary">broken_image</span>
                                     </div>
-                                    <p class="text-[11px] text-on-surface-variant leading-tight">Fusarium / Pythium (Lunak Cokelat)</p>
-                                    <span class="text-[10px] font-semibold text-secondary-container bg-surface-container-highest px-1.5 py-0.5 rounded self-start">Akurasi 99.5%</span>
+                                    <p class="text-[11px] text-on-surface-variant leading-tight">Sampel penyakit busuk batang</p>
                                 </button>
 
-                                {{-- Preset 3: Hawar Daun → blight --}}
                                 <button class="preset-btn p-2 rounded-xl border border-surface-container-highest hover:border-secondary bg-surface-container-low hover:bg-surface-container text-left transition-all group flex flex-col justify-between h-24" data-class="blight" type="button">
                                     <div class="flex items-center justify-between w-full">
                                         <span class="font-label-sm text-label-sm font-bold text-primary group-hover:text-secondary truncate">Hawar Daun</span>
                                         <span class="material-symbols-outlined text-[16px] text-secondary">grain</span>
                                     </div>
-                                    <p class="text-[11px] text-on-surface-variant leading-tight">Exserohilum turcicum (Bercak Memanjang)</p>
-                                    <span class="text-[10px] font-semibold text-secondary-container bg-surface-container-highest px-1.5 py-0.5 rounded self-start">Akurasi 75.5%</span>
-                                </button>
-
-                                {{-- Preset 4: Daun Sehat → tidak ada kelas, tapi bisa dipakai sebagai kontrol --}}
-                                <button class="preset-btn p-2 rounded-xl border border-surface-container-highest hover:border-secondary bg-surface-container-low hover:bg-surface-container text-left transition-all group flex flex-col justify-between h-24" data-class="healthy" type="button">
-                                    <div class="flex items-center justify-between w-full">
-                                        <span class="font-label-sm text-label-sm font-bold text-primary group-hover:text-secondary truncate">Daun Sehat</span>
-                                        <span class="material-symbols-outlined text-[16px] text-secondary">eco</span>
-                                    </div>
-                                    <p class="text-[11px] text-on-surface-variant leading-tight">Kontrol Negatif (Tidak Sakit)</p>
-                                    <span class="text-[10px] font-semibold text-secondary-container bg-surface-container-highest px-1.5 py-0.5 rounded self-start">Kontrol</span>
+                                    <p class="text-[11px] text-on-surface-variant leading-tight">Sampel penyakit hawar daun</p>
                                 </button>
                             </div>
                         </div>
@@ -149,6 +123,10 @@
                                 </span>
                             </div>
 
+                            <div class="hidden" id="result-image-wrapper">
+                                <img alt="Visualisasi deteksi pada gambar yang diunggah" class="w-full max-h-56 object-contain rounded-xl bg-primary-container/70" id="result-detection-image" src="" />
+                            </div>
+
                             <div class="flex flex-col space-y-1">
                                 <span class="text-xs text-primary-fixed uppercase tracking-wider">Hasil Identifikasi Utama:</span>
                                 <h3 class="font-headline-lg text-headline-md md:text-headline-lg font-extrabold text-on-primary" id="result-disease-name">
@@ -161,7 +139,7 @@
 
                             <div class="space-y-1 bg-primary-container/70 p-3 rounded-xl">
                                 <div class="flex justify-between text-xs font-semibold">
-                                    <span class="text-primary-fixed">Tingkat Keyakinan AI (Confidence Score)</span>
+                                    <span class="text-primary-fixed">Skor Deteksi YOLO</span>
                                     <span class="text-secondary-fixed font-bold" id="result-confidence-text">—</span>
                                 </div>
                                 <div class="w-full bg-primary h-2.5 rounded-full overflow-hidden">
@@ -182,7 +160,7 @@
                             <div class="space-y-1.5">
                                 <span class="font-label-sm text-label-sm text-secondary-fixed uppercase font-bold flex items-center gap-1">
                                     <span class="material-symbols-outlined text-[16px]">medical_services</span>
-                                    SOP Tindakan Kuratif &amp; Rekomendasi Obat:
+                                    <span id="result-treatment-title">SOP Tindakan Kuratif &amp; Rekomendasi Obat:</span>
                                 </span>
                                 <div class="text-xs text-on-primary space-y-1.5 bg-primary-container/80 p-3 rounded-xl border border-primary-fixed/20" id="result-treatment">
                                     <p class="text-on-primary-container italic">Rekomendasi akan muncul setelah analisis.</p>
@@ -222,7 +200,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const scanLaser        = document.getElementById('scan-laser');
     const scanProgressText = document.getElementById('scan-progress-text');
     const form             = document.getElementById('corn-detection-form');
-    const confInput        = document.getElementById('conf-input');
 
     // === Preview gambar setelah dipilih ===
     fileInput.addEventListener('change', function (e) {
@@ -324,6 +301,8 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('result-confidence-bar').style.width = '0%';
         document.getElementById('result-symptoms').textContent = 'Silakan unggah gambar terlebih dahulu untuk melihat hasil analisis AI.';
         document.getElementById('result-treatment').innerHTML = '<p class="text-on-primary-container italic">Rekomendasi akan muncul setelah analisis.</p>';
+        document.getElementById('result-image-wrapper').classList.add('hidden');
+        document.getElementById('result-detection-image').src = '';
         document.getElementById('result-status-badge').textContent = 'Menunggu Input';
         document.getElementById('result-status-badge').className = 'px-space-sm py-0.5 rounded-full bg-error text-on-error font-label-sm text-label-sm font-bold';
         document.getElementById('btn-save-report').disabled = true;
@@ -346,38 +325,55 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const e = data.enriched;
         const d = e.disease;
+        const resultImageWrapper = document.getElementById('result-image-wrapper');
+        const resultImage = document.getElementById('result-detection-image');
+        if (typeof data.image_result === 'string' && data.image_result.startsWith('/results/')) {
+            resultImage.src = data.image_result;
+            resultImageWrapper.classList.remove('hidden');
+        }
 
         // Update badge status
         const badge = document.getElementById('result-status-badge');
         if (e.status === 'infected') {
-            badge.textContent = 'Patogen Terdeteksi';
+            badge.textContent = 'Kandidat Penyakit Terdeteksi';
             badge.className = 'px-space-sm py-0.5 rounded-full bg-error text-on-error font-label-sm text-label-sm font-bold';
+        } else if (e.status === 'uncertain') {
+            badge.textContent = 'Perlu Foto Ulang';
+            badge.className = 'px-space-sm py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm font-bold';
         } else {
-            badge.textContent = 'Tanaman Sehat';
-            badge.className = 'px-space-sm py-0.5 rounded-full bg-green-500 text-white font-label-sm text-label-sm font-bold';
+            badge.textContent = 'Belum Teridentifikasi';
+            badge.className = 'px-space-sm py-0.5 rounded-full bg-surface-container-lowest text-primary font-label-sm text-label-sm font-bold';
         }
 
         // Update nama penyakit
-        document.getElementById('result-disease-name').textContent = d.indonesian_name || '—';
-        document.getElementById('result-pathogen-latin').textContent = d.pathogen_latin || '—';
+        document.getElementById('result-disease-name').textContent = d?.indonesian_name || '—';
+        document.getElementById('result-pathogen-latin').textContent = d?.pathogen_latin || '—';
 
         // Update confidence
-        document.getElementById('result-confidence-text').textContent = e.confidence + '%';
-        document.getElementById('result-confidence-bar').style.width = e.confidence + '%';
+        const confidence = e.confidence === null ? null : Number(e.confidence);
+        const confidenceText = document.getElementById('result-confidence-text');
+        const confidenceBar = document.getElementById('result-confidence-bar');
+        confidenceText.textContent = Number.isFinite(confidence) ? `${confidence.toFixed(1)}%` : '—';
+        confidenceBar.style.width = Number.isFinite(confidence) ? `${Math.max(0, Math.min(100, confidence))}%` : '0%';
 
         // Update gejala
-        document.getElementById('result-symptoms').textContent = d.symptoms || '—';
+        document.getElementById('result-symptoms').textContent = d?.symptoms || '—';
 
         // Update treatment
         const t = document.getElementById('result-treatment');
+        document.getElementById('result-treatment-title').textContent = e.status === 'infected'
+            ? 'SOP Tindakan Kuratif & Rekomendasi Obat:'
+            : 'Langkah Berikutnya:';
         t.innerHTML = '';
-        (d.treatments || []).forEach(item => {
+        (d?.treatments || []).forEach(item => {
             const row = document.createElement('div');
             row.className = 'flex items-start gap-2';
-            row.innerHTML = `
-                <span class="material-symbols-outlined text-[16px] text-secondary-fixed shrink-0">check_circle</span>
-                <span>${item}</span>
-            `;
+            const icon = document.createElement('span');
+            icon.className = 'material-symbols-outlined text-[16px] text-secondary-fixed shrink-0';
+            icon.textContent = 'check_circle';
+            const text = document.createElement('span');
+            text.textContent = item;
+            row.append(icon, text);
             t.appendChild(row);
         });
 

@@ -1,11 +1,10 @@
 {
     "agents": [
-        "claude_code"
+        "copilot"
     ],
-    "cloud": true,
+    "cloud": false,
     "skills": [
         "infer-conventions",
-        "deploying-to-cloud",
         "laravel-best-practices",
         "testing-best-practices",
         "tailwindcss-development"
