@@ -9,6 +9,7 @@
             <div class="absolute top-96 -left-32 w-[500px] h-[500px] bg-primary-fixed/20 rounded-full blur-3xl pointer-events-none -z-10"></div>
 
             @include('sections.hero')
+            @include('map')
             @include('sections.corn-detection.scanner')
             @include('sections.encyclopedia')
             @include('sections.workflow')
