@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Masuk - VILAGRO</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{{ asset('images/logo-symbol.png') }}" />
+    <link rel="apple-touch-icon" href="{{ asset('images/logo-symbol.png') }}" />
     @vite(['resources/css/auth.css', 'resources/js/app.js'])
 </head>
-<body class="min-h-screen bg-[#faf9f4] font-[Manrope,sans-serif]">
+<body class="min-h-screen bg-[#faf9f4]">
 <div class="flex min-h-screen">
 
     {{-- KIRI: form login --}}

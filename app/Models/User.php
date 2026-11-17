@@ -7,10 +7,19 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password'])]
+#[Fillable([
+    'name',
+    'email',
+    'password',
+    'farm_latitude',
+    'farm_longitude',
+    'receive_disease_alerts',
+    'show_farm_on_map',
+])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -27,6 +36,15 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'farm_latitude' => 'decimal:7',
+            'farm_longitude' => 'decimal:7',
+            'receive_disease_alerts' => 'boolean',
+            'show_farm_on_map' => 'boolean',
         ];
+    }
+
+    public function diseaseReports(): HasMany
+    {
+        return $this->hasMany(DiseaseReport::class);
     }
 }

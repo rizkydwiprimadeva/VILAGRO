@@ -29,11 +29,11 @@
             <div class="lg:col-span-2 flex flex-col space-y-space-md">
                 <span class="font-label-lg text-label-lg font-bold text-on-surface tracking-wide uppercase">Fitur AI</span>
                 <ul class="space-y-space-sm font-body-sm text-body-sm text-on-surface-variant">
-                    <li><a class="hover:text-primary transition-colors" href="#hero">Beranda</a></li>
-                    <li><a class="hover:text-primary transition-colors" href="#ai-scanner">AI Scanner Daun</a></li>
-                    <li><a class="hover:text-primary transition-colors" href="#ensiklopedia-penyakit">Ensiklopedia Penyakit</a></li>
-                    <li><a class="hover:text-primary transition-colors" href="#alur-kerja">Panduan Petani</a></li>
-                    <li><a class="hover:text-primary transition-colors" href="#faq">Konsultasi Resep</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="{{ route('home') }}">Beranda</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="{{ route('scanner') }}">Scanner AI</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="{{ route('encyclopedia') }}">Katalog Penyakit</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="{{ route('guide') }}">Panduan Petani</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="{{ route('consultation') }}">Konsultasi</a></li>
                 </ul>
             </div>
 

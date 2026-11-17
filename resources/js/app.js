@@ -1,1 +1,2 @@
 import "./diagnosis";
+import "./map";
