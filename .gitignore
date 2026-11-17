@@ -28,3 +28,5 @@ Thumbs.db
 
 .claude/
 .mcp.json
+
+public/results/

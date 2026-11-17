@@ -35,7 +35,7 @@ return [
         ],
     ],
 
-    'ai' => [
+        'ai' => [
         'url' => env('AI_SERVICE_URL', 'http://127.0.0.1:5001'),
         'timeout' => (int) env('AI_SERVICE_TIMEOUT', 120),
         'inference_confidence' => (float) env('AI_INFERENCE_CONFIDENCE', 0.25),

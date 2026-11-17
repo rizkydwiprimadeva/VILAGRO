@@ -85,7 +85,7 @@ class DiseaseReportHistoryTest extends TestCase
         $this->actingAs($farmer)
             ->get(route('scan-history.index', ['page' => 2]))
             ->assertSee('Laporan 11')
-            ->assertDontSee('Laporan 1')
+            ->assertDontSee('Laporan 10')
             ->assertViewHas('reports', fn ($reports): bool => $reports->count() === 1
                 && $reports->total() === 11);
     }
