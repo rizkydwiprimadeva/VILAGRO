@@ -1,12 +1,14 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap");
 @import "tailwindcss";
 
 @layer components {
     .mobile-nav-panel {
-        position: fixed;
-        top: 5rem;
-        left: 0;
-        width: 100vw;
-        padding-inline: max(1rem, calc((100vw - 20rem) / 2));
+        position: absolute;
+        top: calc(100% + 0.75rem);
+        right: 0;
+        width: min(22rem, calc(100vw - 1.5rem));
+        max-height: calc(100svh - 6rem);
+        overflow-y: auto;
     }
 }
 
@@ -165,7 +167,38 @@
         padding: 0;
     }
     body {
+        font-family: "Manrope", "Segoe UI", sans-serif;
         overscroll-behavior: none;
+    }
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-family: "Manrope", "Segoe UI", sans-serif;
+        font-weight: 500;
+        letter-spacing: -0.03em;
+    }
+    button,
+    input,
+    textarea,
+    select {
+        font-family: inherit;
+    }
+    .font-headline-xl,
+    .font-headline-lg,
+    .font-headline-md,
+    .font-headline-sm,
+    .text-headline-xl,
+    .text-headline-lg,
+    .text-headline-md,
+    .text-headline-sm,
+    .text-headline-xl-mobile,
+    .text-headline-lg-mobile {
+        font-family: "Manrope", "Segoe UI", sans-serif !important;
+        font-weight: 500 !important;
+        letter-spacing: -0.03em !important;
     }
     main > :first-child {
         margin-top: 0 !important;

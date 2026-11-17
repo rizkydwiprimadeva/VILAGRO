@@ -1,84 +1,241 @@
-function initializeVillageMap() {
-    var mapSection = document.querySelector(".village-map");
+const DEFAULT_MAP_CENTER = [-2.5, 118];
+const mapInstances = new Map();
 
-    if (!mapSection) {
+function setMapStatus(mapElement, message) {
+    const status = document.getElementById(
+        mapElement.id === "farm-map" ? "farm-map-status" : "scan-map-status",
+    );
+
+    if (status) {
+        status.textContent = message;
+    }
+}
+
+function validCoordinate(latitude, longitude) {
+    return (
+        Number.isFinite(latitude) &&
+        Number.isFinite(longitude) &&
+        latitude >= -90 &&
+        latitude <= 90 &&
+        longitude >= -180 &&
+        longitude <= 180
+    );
+}
+
+function createPopup(title, details) {
+    const content = document.createElement("div");
+    const heading = document.createElement("strong");
+    heading.textContent = title;
+    content.append(heading);
+
+    if (details) {
+        const detail = document.createElement("p");
+        detail.className = "mt-1";
+        detail.textContent = details;
+        content.append(detail);
+    }
+
+    return content;
+}
+
+function initializeMap(mapElement) {
+    if (!window.L) {
+        setMapStatus(
+            mapElement,
+            "Peta tidak dapat dimuat. Anda masih dapat mengisi koordinat atau menggunakan lokasi perangkat.",
+        );
         return;
     }
 
-    var map = mapSection.querySelector("#kediri-map-group");
-    var infoPanel = mapSection.querySelector("#info-panel");
-    var infoTitle = mapSection.querySelector("#info-title");
-    var infoDescription = mapSection.querySelector("#info-desc");
-    var closeButton = mapSection.querySelector("#close-btn");
+    const latitudeInput = document.getElementById(
+        mapElement.dataset.latitudeInput,
+    );
+    const longitudeInput = document.getElementById(
+        mapElement.dataset.longitudeInput,
+    );
+    const inputLatitude = Number.parseFloat(latitudeInput?.value ?? "");
+    const inputLongitude = Number.parseFloat(longitudeInput?.value ?? "");
+    const hasInputLocation = validCoordinate(inputLatitude, inputLongitude);
+    const map = window.L.map(mapElement, { scrollWheelZoom: false });
+    const initialCenter = hasInputLocation
+        ? [inputLatitude, inputLongitude]
+        : DEFAULT_MAP_CENTER;
 
-    if (!map || !infoPanel || !infoTitle || !infoDescription || !closeButton) {
-        return;
-    }
+    map.setView(initialCenter, hasInputLocation ? 13 : 5);
+    window.L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    }).addTo(map);
+    window.L.control.scale().addTo(map);
 
-    function getField(target) {
-        if (!(target instanceof Element)) {
-            return null;
+    let selectedMarker = null;
+    const updateLocation = (latitude, longitude, panTo = true) => {
+        if (!validCoordinate(latitude, longitude)) {
+            setMapStatus(mapElement, "Koordinat tidak valid.");
+            return;
         }
 
-        var field = target.closest('path[data-nama][data-deskripsi]');
-        var fieldGroup = field ? field.closest('g[class^="sawah-"]') : null;
+        latitudeInput && (latitudeInput.value = latitude.toFixed(7));
+        longitudeInput && (longitudeInput.value = longitude.toFixed(7));
 
-        return fieldGroup && map.contains(fieldGroup) ? field : null;
+        if (!selectedMarker) {
+            selectedMarker = window.L.marker([latitude, longitude]).addTo(map);
+        } else {
+            selectedMarker.setLatLng([latitude, longitude]);
+        }
+
+        selectedMarker.bindPopup(createPopup("Lokasi yang dipilih"));
+
+        if (panTo) {
+            map.setView([latitude, longitude], Math.max(map.getZoom(), 13));
+        }
+
+        setMapStatus(
+            mapElement,
+            `Lokasi dipilih: ${latitude.toFixed(5)}, ${longitude.toFixed(5)}.`,
+        );
+    };
+
+    if (hasInputLocation) {
+        updateLocation(inputLatitude, inputLongitude, false);
     }
 
-    function showField(field) {
-        mapSection.querySelectorAll("path.active").forEach(function (activeField) {
-            activeField.classList.remove("active");
-            activeField.setAttribute("aria-pressed", "false");
-        });
+    map.on("click", (event) => {
+        if (latitudeInput && longitudeInput) {
+            updateLocation(event.latlng.lat, event.latlng.lng);
+        }
+    });
 
-        field.classList.add("active");
-        field.setAttribute("aria-pressed", "true");
-        infoTitle.textContent = field.getAttribute("data-nama");
-        infoDescription.textContent = field.getAttribute("data-deskripsi");
-        infoPanel.hidden = false;
+    mapInstances.set(mapElement.id, { map, updateLocation });
+
+    if (mapElement.id !== "farm-map") {
+        return;
     }
 
-    function hideInfo() {
-        infoPanel.hidden = true;
-        mapSection.querySelectorAll("path.active").forEach(function (activeField) {
-            activeField.classList.remove("active");
-            activeField.setAttribute("aria-pressed", "false");
-        });
-    }
+    const mapData = window.vilagroFarmMapData ?? { reports: [], farms: [] };
+    const bounds = [];
 
-    mapSection.querySelectorAll('#kediri-map-group > g[class^="sawah-"] > path[data-nama][data-deskripsi]').forEach(function (field) {
-        field.setAttribute("tabindex", "0");
-        field.setAttribute("role", "button");
-        field.setAttribute("aria-pressed", "false");
-        field.setAttribute(
-            "aria-label",
-            field.getAttribute("data-nama") + ". " + field.getAttribute("data-deskripsi")
+    mapData.reports.forEach((report) => {
+        const point = [report.latitude, report.longitude];
+        const marker = window.L.circleMarker(point, {
+            color: "#ba1a1a",
+            fillColor: "#ba1a1a",
+            fillOpacity: 0.85,
+            radius: 8,
+        }).addTo(map);
+
+        marker.bindPopup(
+            createPopup(
+                report.name,
+                `Dilaporkan ${report.created_at}${
+                    report.confidence === null
+                        ? ""
+                        : ` · skor model ${report.confidence}%`
+                }`,
+            ),
+        );
+        bounds.push(point);
+    });
+
+    mapData.farms.forEach((farm) => {
+        const point = [farm.latitude, farm.longitude];
+        const marker = window.L.circleMarker(point, {
+            color: "#072417",
+            fillColor: "#072417",
+            fillOpacity: 0.75,
+            radius: 7,
+        }).addTo(map);
+
+        marker.bindPopup(
+            createPopup(
+                "Kebun petani mitra",
+                "Titik lokasi perkiraan dibagikan dengan persetujuan pemilik.",
+            ),
+        );
+        bounds.push(point);
+    });
+
+    if (bounds.length > 0 && !hasInputLocation) {
+        map.fitBounds(bounds, { maxZoom: 12, padding: [24, 24] });
+    }
+}
+
+document
+    .querySelectorAll("#scan-location-map, #farm-map")
+    .forEach(initializeMap);
+
+document.querySelectorAll("[data-location-map]").forEach((button) => {
+    button.addEventListener("click", () => {
+        const mapElement = document.getElementById(button.dataset.locationMap);
+        const target = mapInstances.get(button.dataset.locationMap);
+
+        if (!mapElement) {
+            return;
+        }
+
+        if (!navigator.geolocation) {
+            setMapStatus(mapElement, "Browser ini tidak mendukung fitur lokasi. Pilih titik pada peta atau isi koordinat secara manual.");
+            return;
+        }
+
+        button.disabled = true;
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                if (target) {
+                    target.updateLocation(
+                        position.coords.latitude,
+                        position.coords.longitude,
+                    );
+                } else {
+                    const latitudeInput = document.getElementById(
+                        mapElement.dataset.latitudeInput,
+                    );
+                    const longitudeInput = document.getElementById(
+                        mapElement.dataset.longitudeInput,
+                    );
+
+                    if (latitudeInput && longitudeInput) {
+                        latitudeInput.value = position.coords.latitude.toFixed(7);
+                        longitudeInput.value = position.coords.longitude.toFixed(7);
+                        setMapStatus(
+                            mapElement,
+                            "Lokasi perangkat berhasil diisi. Peta belum dapat dimuat.",
+                        );
+                    }
+                }
+                button.disabled = false;
+            },
+            () => {
+                setMapStatus(mapElement, "Lokasi tidak dapat diakses. Izinkan akses lokasi atau pilih titik pada peta.");
+                button.disabled = false;
+            },
+            { enableHighAccuracy: true, maximumAge: 60000, timeout: 10000 },
         );
     });
+});
 
-    map.addEventListener("click", function (event) {
-        var field = getField(event.target);
+[
+    ["scan-latitude", "scan-longitude", "scan-location-map"],
+    ["farm-latitude", "farm-longitude", "farm-map"],
+].forEach(([latitudeId, longitudeId, mapId]) => {
+    const latitudeInput = document.getElementById(latitudeId);
+    const longitudeInput = document.getElementById(longitudeId);
+    const target = mapInstances.get(mapId);
 
-        if (field) {
-            showField(field);
+    if (!latitudeInput || !longitudeInput || !target) {
+        return;
+    }
+
+    const updateFromInputs = () => {
+        const latitude = Number.parseFloat(latitudeInput.value);
+        const longitude = Number.parseFloat(longitudeInput.value);
+
+        if (validCoordinate(latitude, longitude)) {
+            target.updateLocation(latitude, longitude, false);
         }
-    });
+    };
 
-    map.addEventListener("keydown", function (event) {
-        var field = getField(event.target);
-
-        if (field && (event.key === "Enter" || event.key === " ")) {
-            event.preventDefault();
-            showField(field);
-        }
-    });
-
-    closeButton.addEventListener("click", hideInfo);
-}
-
-if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initializeVillageMap, { once: true });
-} else {
-    initializeVillageMap();
-}
+    latitudeInput.addEventListener("change", updateFromInputs);
+    longitudeInput.addEventListener("change", updateFromInputs);
+});

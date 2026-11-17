@@ -4,12 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Daftar Akun - VILAGRO</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{{ asset('images/logo-symbol.png') }}" />
+    <link rel="apple-touch-icon" href="{{ asset('images/logo-symbol.png') }}" />
     @vite(['resources/css/auth.css', 'resources/js/app.js'])
 </head>
-<body class="min-h-screen bg-[#faf9f4] font-[Manrope,sans-serif]">
+<body class="min-h-screen bg-[#faf9f4]">
 <div class="flex min-h-screen">
     <div class="flex w-full items-center justify-center px-6 py-10 md:w-[55%] md:px-12">
         <div class="w-full max-w-md">

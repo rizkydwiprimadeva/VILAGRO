@@ -14,7 +14,6 @@ export default defineConfig({
                 "resources/css/app.css",
                 "resources/js/app.js",
                 "resources/css/auth.css",
-                "resources/css/map.css",
                 "resources/js/map.js",
             ],
             refresh: true,

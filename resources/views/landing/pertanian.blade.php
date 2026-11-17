@@ -5,6 +5,8 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <meta content="web_standard" name="shell-type"/>
 <title>VILAGRO AI - Deteksi Cepat Penyakit &amp; Hama Tanaman Jagung Berbasis Computer Vision</title>
+<link rel="icon" type="image/png" href="{{ asset('images/logo-symbol.png') }}"/>
+<link rel="apple-touch-icon" href="{{ asset('images/logo-symbol.png') }}"/>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
@@ -73,16 +75,16 @@
             "full": "9999px"
           },
           spacing: {
-            "gutter-lg": "2rem",
+            "gutter-lg": "1.5rem",
             "space-xs": "0.25rem",
-            "space-lg": "1.5rem",
-            "margin-desktop": "3rem",
-            "margin": "2rem",
-            "gutter-sm": "1rem",
-            "gutter": "1.5rem",
-            "space-md": "1rem",
-            "margin-mobile": "1rem",
-            "space-xl": "2.5rem",
+            "space-lg": "1.25rem",
+            "margin-desktop": "1.5rem",
+            "margin": "1.25rem",
+            "gutter-sm": "0.75rem",
+            "gutter": "1rem",
+            "space-md": "0.75rem",
+            "margin-mobile": "0.875rem",
+            "space-xl": "1.5rem",
             "space-sm": "0.5rem"
           },
           fontFamily: {
@@ -169,9 +171,17 @@
         opacity: 0;
       }
     }
+
+    main section:not(#hero):not(#simple-benefits) {
+      display: none !important;
+    }
+
+    body {
+      background: #f7f5f1;
+    }
   </style>
 </head>
-<body class="bg-background font-body-md text-on-surface antialiased selection:bg-secondary-fixed selection:text-on-secondary-fixed">
+<body class="bg-[#f7f5f1] font-body-md text-on-surface antialiased selection:bg-secondary-fixed selection:text-on-secondary-fixed">
 <!-- ========================================================================= -->
 <!-- HEADER / NAVIGATION (Blade partial: resources/views/partials/header.blade.php) -->
 <!-- ========================================================================= -->
@@ -179,85 +189,55 @@
 <!-- ========================================================================= -->
 <!-- MAIN CONTENT CONTAINER -->
 <!-- ========================================================================= -->
-<main class="w-full pt-20 bg-background min-h-screen">
+<main class="w-full pt-14 bg-background min-h-screen">
 <div class="flex flex-col w-full">
-<!-- Ambient Glow & Decorative Elements -->
-<div class="relative w-full overflow-hidden">
-<div class="absolute -top-40 -right-40 w-[600px] h-[600px] bg-secondary-fixed/30 rounded-full blur-3xl pointer-events-none -z-10"></div>
-<div class="absolute top-96 -left-32 w-[500px] h-[500px] bg-primary-fixed/20 rounded-full blur-3xl pointer-events-none -z-10"></div>
-<!-- ========================================================================= -->
-<!-- 1. HERO SECTION (AI Corn Disease Detection Theme) -->
-<!-- ========================================================================= -->
-<section class="relative max-w-7xl mx-auto px-margin-mobile md:px-margin lg:px-margin-desktop pt-8 pb-14 md:pt-14 md:pb-20" id="hero">
-<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-lg items-center">
-<!-- Hero Text Content -->
-<div class="lg:col-span-7 flex flex-col space-y-space-md">
-<div class="inline-flex items-center gap-space-xs self-start px-space-md py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-md text-label-md">
-<span class="material-symbols-outlined text-[16px]">biotech</span>
-<span>Computer Vision &amp; Deep Learning Agronomi Jagung</span>
-</div>
-<h1 class="font-headline-xl text-headline-xl-mobile md:text-headline-xl text-primary font-extrabold tracking-tight leading-tight">
-                Deteksi Dini Penyakit Jagung dengan AI Cerdas — <span class="text-secondary">Cukup Unggah Foto Tanaman</span>
+<!-- ======================================================================== -->
+<!-- 1. HERO SECTION (Simplified for older farmer audience) -->
+<!-- ======================================================================== -->
+<section class="relative max-w-6xl mx-auto px-4 py-6 md:px-6 lg:px-8 md:py-10" id="hero">
+<div class="grid grid-cols-1 gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
+<div class="flex flex-col">
+<p class="text-xs font-bold uppercase tracking-[0.14em] text-secondary">AI untuk pertanian</p>
+
+<h1 class="mt-3 max-w-xl text-4xl font-extrabold leading-[0.96] tracking-[-0.06em] text-primary md:text-6xl">
+Deteksi penyakit jagung lebih cepat dan lebih mudah
 </h1>
-<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
-                Diagnosis instan dalam 3 detik untuk Bulai, Busuk Batang, Karat Daun, hingga Ulat Grayak (FAW). Dapatkan rekomendasi dosis obat dan SOP penanganan agronomis teruji sebelum kerugian panen meluas.
-              </p>
-<!-- Dual CTA -->
-<div class="flex flex-wrap items-center gap-space-md pt-space-sm">
-<a class="inline-flex items-center justify-center gap-space-xs px-space-xl py-space-md rounded-lg bg-primary text-on-primary font-label-lg text-label-lg shadow-md hover:bg-primary-container transition-all duration-200" href="#ai-scanner">
-<span class="material-symbols-outlined text-[20px]">photo_camera</span>
-<span>Scan Tanaman Sekarang</span>
-<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
-</a>
-<a class="inline-flex items-center justify-center gap-space-xs px-space-lg py-space-md rounded-lg bg-surface-container-high text-on-surface font-label-lg text-label-lg hover:bg-surface-variant transition-all duration-200" href="#ensiklopedia-penyakit">
-<span class="material-symbols-outlined text-[18px]">menu_book</span>
-<span>Pelajari Gejala Hama</span>
+
+<p class="mt-5 max-w-lg text-base leading-relaxed text-on-surface-variant md:text-lg">
+Cukup ambil foto daun, lalu lihat hasil diagnosa dan langkah penanganan yang jelas dalam hitungan detik.
+</p>
+
+<div class="mt-6 flex flex-wrap items-center gap-3">
+<a class="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-on-primary shadow-sm transition hover:bg-primary-container" href="#ai-scanner">
+<span class="material-symbols-outlined text-[18px]">photo_camera</span>
+<span>Scan tanaman</span>
 </a>
 </div>
-<!-- Micro Proof Badges -->
-<div class="flex items-center flex-wrap gap-space-md pt-space-xs text-on-surface-variant font-body-sm text-body-sm">
-<div class="flex items-center gap-1 text-secondary">
-<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">verified</span>
-<span class="font-semibold text-on-surface">Model Akurasi 98.4%</span>
+
+<div class="mt-6 flex flex-wrap items-center gap-3 text-sm text-on-surface-variant">
+<div class="flex items-center gap-2 rounded-full bg-white px-3 py-2 shadow-sm ring-1 ring-surface-container-high">
+<span class="material-symbols-outlined text-[18px] text-secondary" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="font-semibold text-on-surface">98.4% akurat</span>
 </div>
-<span>•</span>
-<div class="flex items-center gap-1 text-secondary">
-<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">flash_on</span>
-<span class="font-semibold text-on-surface">Analisis &lt; 3 Detik</span>
-</div>
-<span>•</span>
-<div class="flex items-center gap-1 text-secondary">
-<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">dataset</span>
-<span class="font-semibold text-on-surface">120.000+ Dataset Jagung Tropis</span>
+<div class="flex items-center gap-2 rounded-full bg-white px-3 py-2 shadow-sm ring-1 ring-surface-container-high">
+<span class="material-symbols-outlined text-[18px] text-secondary" style="font-variation-settings: 'FILL' 1;">flash_on</span>
+<span class="font-semibold text-on-surface">Hasil cepat</span>
 </div>
 </div>
 </div>
-<!-- Hero Interactive Preview Banner -->
-<div class="lg:col-span-5 relative mt-6 lg:mt-0">
-<div class="relative w-full rounded-2xl overflow-hidden bg-surface-container-low shadow-xl border border-surface-container-highest">
-<img class="w-full h-[440px] object-cover" data-alt="Close up healthy corn leaf with simulated AI computer vision detection bounding boxes on plant disease" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDoDrtX1133LbY1YD3ukd9U2GYlo_rcGoa-rBQp4Ty-QTzDLD5h_5nQnqCMM4rZI7q0hreyuUV-uXelZ0YchOh5Q3CVT776LG8qtIqkt9wPkjF9Xbh2IC1cydOlGnMn04cwRbWyLenAFCnjx8P5VntotuPK61Bl3UPgw7F0iDuCqLPYjQ1701J0DM3itBIBx5fykpJfqYtkEP3pJ-JuUL484ltmtEA_dkhMCwSYtUtVMH68rVKpHtia"/>
-<!-- Bounding Box Simulated Tag -->
-<div class="absolute top-16 right-8 bg-error/90 text-on-error px-3 py-1.5 rounded-lg shadow-lg border border-white/20 backdrop-blur-md flex items-center gap-2">
-<span class="w-2.5 h-2.5 rounded-full bg-white animate-ping"></span>
-<div class="text-left">
-<p class="text-[10px] uppercase font-bold tracking-wider leading-tight text-white/80">Objek Terdeteksi</p>
-<p class="text-xs font-bold leading-tight">Peronosclerospora (Bulai)</p>
+
+<div class="relative mt-2 lg:mt-0">
+<div class="overflow-hidden rounded-[30px] border border-[#e7e1d7] bg-white shadow-[0_22px_40px_rgba(23,32,24,0.06)]">
+<img class="h-[300px] w-full object-cover md:h-[390px]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDoDrtX1133LbY1YD3ukd9U2GYlo_rcGoa-rBQp4Ty-QTzDLD5h_5nQnqCMM4rZI7q0hreyuUV-uXelZ0YchOh5Q3CVT776LG8qtIqkt9wPkjF9Xbh2IC1cydOlGnMn04cwRbWyLenAFCnjx8P5VntotuPK61Bl3UPgw7F0iDuCqLPYjQ1701J0DM3itBIBx5fykpJfqYtkEP3pJ-JuUL484ltmtEA_dkhMCwSYtUtVMH68rVKpHtia" alt="Penyakit jagung" />
+
+<div class="bg-[#f1eee7] p-4">
+<p class="text-sm text-on-surface-variant">Deteksi gejala tanaman</p>
+<p class="mt-1 text-lg font-semibold text-primary">Bulai terdeteksi di area daun</p>
 </div>
 </div>
-<div class="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/30 to-transparent flex flex-col justify-end p-space-lg text-on-primary">
-<div class="flex items-center gap-2 mb-1">
-<span class="px-2 py-0.5 rounded bg-secondary text-on-secondary font-label-sm text-[11px] font-bold">Model v3.4 Active</span>
-<span class="text-xs text-primary-fixed">Kamera / Galeri Smartphone Kompatibel</span>
-</div>
-<p class="font-headline-sm text-headline-sm font-semibold">Identifikasi Cepat Tanpa Menunggu Laboratorium</p>
 </div>
 </div>
-<!-- Floating Accent Diagnostic Stats Badge -->
-<div class="absolute -bottom-6 -left-6 bg-surface-container-lowest p-space-md rounded-xl shadow-lg flex items-center gap-space-md hidden sm:flex max-w-xs border border-surface-container-high">
-<div class="w-12 h-12 rounded-lg bg-primary-fixed flex items-center justify-center text-primary shrink-0">
-<span class="material-symbols-outlined text-[28px]">search_check</span>
-</div>
-<div>
+</section>
 <p class="font-label-sm text-label-sm text-on-surface-variant uppercase">Kasus Terselesaikan</p>
 <p class="font-headline-sm text-headline-sm font-bold text-primary">48.200+ Daun Jagung</p>
 </div>
@@ -288,12 +268,47 @@
 </div>
 </div>
 </section>
+
+<section class="max-w-6xl mx-auto px-4 md:px-6 lg:px-8 pb-10" id="simple-benefits">
+  <div class="rounded-3xl border border-surface-container-high bg-surface-container-lowest p-6 md:p-8 shadow-sm">
+    <div class="mb-6 text-center">
+      <p class="text-sm font-bold uppercase tracking-[0.12em] text-secondary">Kenapa petani memilih VILAGRO</p>
+      <h2 class="mt-2 text-2xl md:text-3xl font-extrabold text-primary">Mudah, cepat, dan jelas</h2>
+    </div>
+
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+      <div class="rounded-2xl border border-[#e7e1d7] bg-[#faf7f2] p-5 shadow-sm">
+        <div class="mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
+          <span class="material-symbols-outlined text-[22px]">photo_camera</span>
+        </div>
+        <h3 class="text-lg font-bold text-primary">Foto saja</h3>
+        <p class="mt-2 text-sm leading-relaxed text-on-surface-variant">Cukup ambil foto daun yang tampak tidak normal.</p>
+      </div>
+
+      <div class="rounded-2xl border border-[#e7e1d7] bg-[#faf7f2] p-5 shadow-sm">
+        <div class="mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-[#f1e4bb] text-[#725100]">
+          <span class="material-symbols-outlined text-[22px]">search</span>
+        </div>
+        <h3 class="text-lg font-bold text-primary">Hasil cepat</h3>
+        <p class="mt-2 text-sm leading-relaxed text-on-surface-variant">AI membantu mengenali gejala utama dengan cepat.</p>
+      </div>
+
+      <div class="rounded-2xl border border-[#e7e1d7] bg-[#faf7f2] p-5 shadow-sm">
+        <div class="mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-[#dfeee5] text-primary">
+          <span class="material-symbols-outlined text-[22px]">medication</span>
+        </div>
+        <h3 class="text-lg font-bold text-primary">Saran jelas</h3>
+        <p class="mt-2 text-sm leading-relaxed text-on-surface-variant">Dapatkan langkah penanganan yang sederhana dan tepat.</p>
+      </div>
+    </div>
+  </div>
+</section>
 <!-- ========================================================================= -->
 <!-- 2. CORE FEATURE: INTERACTIVE AI PHOTO SCANNER & DIAGNOSTIC TOOL -->
-<!-- (Section replaces old harvest calculator, completely interactive) -->
+<!-- (Section replaced with simplified overview to keep the landing uncluttered) -->
 <!-- ========================================================================= -->
-<section class="bg-surface-container py-16 scroll-mt-20" id="ai-scanner">
-<div class="max-w-7xl mx-auto px-margin-mobile md:px-margin lg:px-margin-desktop">
+<section class="bg-surface-container py-10 scroll-mt-20" id="ai-scanner">
+<div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
 <div class="bg-surface-container-lowest rounded-3xl p-space-lg md:p-space-xl shadow-xl border border-surface-container-high">
 <!-- Section Header -->
 <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-space-md border-b border-surface-container-high pb-6">
@@ -501,112 +516,125 @@
 <!-- ========================================================================= -->
 <!-- 3. ENSIKLOPEDIA 4 ANCAMAN UTAMA JAGUNG (Visual Pathogen Encyclopedia) -->
 <!-- ========================================================================= -->
-<section class="max-w-7xl mx-auto px-margin-mobile md:px-margin lg:px-margin-desktop py-20 scroll-mt-14" id="ensiklopedia-penyakit">
-<div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-space-md">
-<div class="max-w-xl flex flex-col space-y-space-xs">
-<span class="font-label-md text-label-md uppercase tracking-wider text-secondary font-bold">Katalog Patologi Jagung Tropis</span>
-<h2 class="font-headline-lg text-headline-md md:text-headline-lg text-primary font-bold">
+<section class="scroll-mt-20 bg-surface-container-low py-16 md:py-20" id="ensiklopedia-penyakit">
+<div class="mx-auto max-w-7xl px-margin-mobile md:px-margin lg:px-margin-desktop">
+<div class="mb-9 flex flex-col gap-5 md:mb-12 md:flex-row md:items-end md:justify-between">
+<div class="max-w-2xl">
+<span class="inline-flex items-center gap-2 rounded-full bg-tertiary-fixed px-3 py-1.5 font-label-md text-label-md font-bold uppercase tracking-wider text-on-tertiary-fixed-variant">
+<span class="h-2 w-2 rounded-full bg-secondary"></span>
+Katalog Patologi Jagung Tropis
+</span>
+<h2 class="mt-4 font-headline-lg text-headline-md font-bold text-primary md:text-headline-lg">
                 Ensiklopedia 4 Ancaman Utama Tanaman Jagung
               </h2>
 </div>
-<p class="font-body-md text-body-md text-on-surface-variant max-w-md">
+<p class="max-w-lg font-body-md text-body-md text-on-surface-variant">
               Pahami karakteristik gejala visual, fase rentan tanaman, serta tingkat keparahan risiko gagal panen dari masing-masing patogen.
             </p>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
 <!-- Card 1: Penyakit Bulai -->
-<div class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col border border-surface-container-high">
-<div class="relative h-48 w-full overflow-hidden bg-surface-container">
+<div class="group flex h-full flex-col overflow-hidden rounded-3xl border border-surface-container-high bg-surface-container-lowest shadow-sm transition duration-300 hover:-translate-y-1 hover:border-primary/20 hover:shadow-xl">
+<div class="relative h-52 w-full overflow-hidden bg-surface-container sm:h-56">
 <img class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" data-alt="Close up corn leaf with downy mildew symptoms chlorotic yellow stripes" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyUzvEdLyELF2DFTr-kflCjKXxR9KIwCZLICS8itvZbW04jaJcJAYmqUtyQ1u3hcG49wypgAfpUhNWBOn2p__ih0f_Zc09ZoEj1X1ZhYwagGGLfWMx1d3-DkmbjHW-YxOAajI5PFZ0NWRokxZ7kjpcTxYdh-7Pgo6B87AiT0PkGTLuB0erlHlBLBhZHDKmIA2sTQA9Dq3mDz0a9-8dc2OyHhtnJUjyeBA8C4diwZzW05Y2De0jca9Z"/>
-<span class="absolute top-3 left-3 bg-error text-on-error text-xs font-bold px-2.5 py-1 rounded-md">Risiko: Sangat Tinggi (90-100%)</span>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/55 via-transparent to-black/10"></div>
+<span class="absolute right-3 top-3 rounded-full bg-error/95 px-3 py-1.5 text-[11px] font-bold text-on-error shadow-lg backdrop-blur">Risiko sangat tinggi</span>
+<span class="absolute bottom-3 left-4 inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-primary/65 px-3 py-1.5 text-[11px] font-semibold text-white backdrop-blur"><span class="material-symbols-outlined text-sm" aria-hidden="true">coronavirus</span>Penyakit</span>
 </div>
-<div class="p-space-md flex-1 flex flex-col justify-between">
+<div class="flex flex-1 flex-col justify-between p-5">
 <div>
 <span class="text-[11px] font-bold text-secondary uppercase tracking-wider">Jamur Oomycota</span>
-<h3 class="font-headline-sm text-headline-sm text-primary font-bold mt-0.5 mb-1">Penyakit Bulai</h3>
-<p class="text-xs font-serif italic text-outline mb-2">Peronosclerospora maydis</p>
-<p class="font-body-sm text-body-sm text-on-surface-variant">
+<h3 class="mt-1 font-headline-sm text-headline-sm font-bold text-primary">Penyakit Bulai</h3>
+<p class="mb-3 mt-1 text-xs font-serif italic text-outline">Peronosclerospora maydis</p>
+<p class="font-body-sm text-body-sm leading-6 text-on-surface-variant">
                     Menyerang fase vegetatif awal (HST 7–35). Daun menguning keputihan bergaris, tanaman mandul dan tidak mampu membentuk tongkol jagung.
                   </p>
 </div>
-<div class="mt-4 pt-3 border-t border-surface-container-high flex items-center justify-between">
-<span class="text-xs font-semibold text-primary">Fase Rentan: HST 10–30</span>
-<button class="text-secondary font-label-sm text-label-sm font-bold hover:underline flex items-center" onclick="triggerPresetDiagnosis('bulai')" type="button">
-<span>Uji Diagnosa AI</span>
-<span class="material-symbols-outlined text-[16px] ml-0.5">arrow_forward</span>
+<div class="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-surface-container-high pt-4">
+<span class="inline-flex items-center gap-1.5 rounded-full bg-surface-container-low px-3 py-2 text-xs font-semibold text-on-surface-variant"><span class="material-symbols-outlined text-base text-secondary" aria-hidden="true">schedule</span>HST 10–30</span>
+<button class="inline-flex items-center gap-1.5 rounded-full bg-primary px-3.5 py-2.5 text-xs font-bold text-white transition hover:bg-primary-container focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" onclick="triggerPresetDiagnosis('bulai')" type="button">
+<span>Uji dengan AI</span>
+<span class="material-symbols-outlined text-base transition-transform group-hover:translate-x-0.5" aria-hidden="true">arrow_forward</span>
 </button>
 </div>
 </div>
 </div>
 <!-- Card 2: Busuk Batang -->
-<div class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col border border-surface-container-high">
-<div class="relative h-48 w-full overflow-hidden bg-surface-container">
+<div class="group flex h-full flex-col overflow-hidden rounded-3xl border border-surface-container-high bg-surface-container-lowest shadow-sm transition duration-300 hover:-translate-y-1 hover:border-primary/20 hover:shadow-xl">
+<div class="relative h-52 w-full overflow-hidden bg-surface-container sm:h-56">
 <img class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" data-alt="Damaged lower corn stalk with brown softening fungal rot rot in wet soil field" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCn5iYt3n31xYN1Uv6V5V8nnDc348cIo3MLt68IgSt5Xz47CCUNhJNuGoOJbNuzpoJyxTOEeZnaLJ1nBG_ertsTtJwg6ns6jf829s6wbKWJL3uCMr9Rolu_ULWq4kxMxEguAp3iV3bzttL7ofcJTWZM7zES2kak-Gx6rZ7_tumywQ2w6Q_RhHXLR7c2OxK21gyHkQMYqWs1tbJ5IHDptVNkxKw1rfc7_WKYlYaifcpfwbA6OrY_MWOC"/>
-<span class="absolute top-3 left-3 bg-secondary-container text-on-secondary-container text-xs font-bold px-2.5 py-1 rounded-md">Risiko: Tinggi (40-60%)</span>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/55 via-transparent to-black/10"></div>
+<span class="absolute right-3 top-3 rounded-full bg-secondary-container/95 px-3 py-1.5 text-[11px] font-bold text-on-secondary-container shadow-lg backdrop-blur">Risiko tinggi</span>
+<span class="absolute bottom-3 left-4 inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-primary/65 px-3 py-1.5 text-[11px] font-semibold text-white backdrop-blur"><span class="material-symbols-outlined text-sm" aria-hidden="true">coronavirus</span>Penyakit</span>
 </div>
-<div class="p-space-md flex-1 flex flex-col justify-between">
+<div class="flex flex-1 flex-col justify-between p-5">
 <div>
 <span class="text-[11px] font-bold text-secondary uppercase tracking-wider">Jamur Tular Tanah</span>
-<h3 class="font-headline-sm text-headline-sm text-primary font-bold mt-0.5 mb-1">Busuk Batang</h3>
-<p class="text-xs font-serif italic text-outline mb-2">Fusarium verticillioides / Pythium</p>
-<p class="font-body-sm text-body-sm text-on-surface-variant">
+<h3 class="mt-1 font-headline-sm text-headline-sm font-bold text-primary">Busuk Batang</h3>
+<p class="mb-3 mt-1 text-xs font-serif italic text-outline">Fusarium verticillioides / Pythium</p>
+<p class="font-body-sm text-body-sm leading-6 text-on-surface-variant">
                     Ruas batang bagian bawah lunak, menghitam, berbau asam, dan tanaman mudah roboh diterpa angin saat masa pengisian biji.
                   </p>
 </div>
-<div class="mt-4 pt-3 border-t border-surface-container-high flex items-center justify-between">
-<span class="text-xs font-semibold text-primary">Fase Rentan: HST 55–80</span>
-<button class="text-secondary font-label-sm text-label-sm font-bold hover:underline flex items-center" onclick="triggerPresetDiagnosis('busuk')" type="button">
-<span>Uji Diagnosa AI</span>
-<span class="material-symbols-outlined text-[16px] ml-0.5">arrow_forward</span>
+<div class="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-surface-container-high pt-4">
+<span class="inline-flex items-center gap-1.5 rounded-full bg-surface-container-low px-3 py-2 text-xs font-semibold text-on-surface-variant"><span class="material-symbols-outlined text-base text-secondary" aria-hidden="true">schedule</span>HST 55–80</span>
+<button class="inline-flex items-center gap-1.5 rounded-full bg-primary px-3.5 py-2.5 text-xs font-bold text-white transition hover:bg-primary-container focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" onclick="triggerPresetDiagnosis('busuk')" type="button">
+<span>Uji dengan AI</span>
+<span class="material-symbols-outlined text-base transition-transform group-hover:translate-x-0.5" aria-hidden="true">arrow_forward</span>
 </button>
 </div>
 </div>
 </div>
 <!-- Card 3: Karat Daun -->
-<div class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col border border-surface-container-high">
-<div class="relative h-48 w-full overflow-hidden bg-surface-container">
+<div class="group flex h-full flex-col overflow-hidden rounded-3xl border border-surface-container-high bg-surface-container-lowest shadow-sm transition duration-300 hover:-translate-y-1 hover:border-primary/20 hover:shadow-xl">
+<div class="relative h-52 w-full overflow-hidden bg-surface-container sm:h-56">
 <img class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" data-alt="Corn plant leaf full of reddish brown pustules rust fungus in tropical farm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA7SUaVO5DkzUlHSQUf5rFLOZ4q7cTVIdy7FGBiiOwd19l2EMJpVJPbfoCirz7murwLZC2Fz8NuVF0pF0Uf3lDrqmfS8H9bS5O1GbRNLocNsf4AuGD9F7pMg0dhwc2wqF5jxIiDmulHkVmeKrvN5nfNEJ9ucG4_KixlC0sKEstmbW5nWwYKIh17Q1icBjvj4qFXAb1h3864h5CslI7vHSzw0h5D1TpoX1SekKATTSKnUjHR-gRPbxhF"/>
-<span class="absolute top-3 left-3 bg-secondary text-on-secondary text-xs font-bold px-2.5 py-1 rounded-md">Risiko: Sedang (25-45%)</span>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/55 via-transparent to-black/10"></div>
+<span class="absolute right-3 top-3 rounded-full bg-tertiary-fixed/95 px-3 py-1.5 text-[11px] font-bold text-on-tertiary-fixed-variant shadow-lg backdrop-blur">Risiko sedang</span>
+<span class="absolute bottom-3 left-4 inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-primary/65 px-3 py-1.5 text-[11px] font-semibold text-white backdrop-blur"><span class="material-symbols-outlined text-sm" aria-hidden="true">coronavirus</span>Penyakit</span>
 </div>
-<div class="p-space-md flex-1 flex flex-col justify-between">
+<div class="flex flex-1 flex-col justify-between p-5">
 <div>
 <span class="text-[11px] font-bold text-secondary uppercase tracking-wider">Pucciniales</span>
-<h3 class="font-headline-sm text-headline-sm text-primary font-bold mt-0.5 mb-1">Karat Daun Jagung</h3>
-<p class="text-xs font-serif italic text-outline mb-2">Puccinia sorghi</p>
-<p class="font-body-sm text-body-sm text-on-surface-variant">
+<h3 class="mt-1 font-headline-sm text-headline-sm font-bold text-primary">Karat Daun Jagung</h3>
+<p class="mb-3 mt-1 text-xs font-serif italic text-outline">Puccinia sorghi</p>
+<p class="font-body-sm text-body-sm leading-6 text-on-surface-variant">
                     Muncul bintik pustul berwarna cokelat kemerahan di atas dan bawah permukaan daun yang menghambat fotosintesis secara signifikan.
                   </p>
 </div>
-<div class="mt-4 pt-3 border-t border-surface-container-high flex items-center justify-between">
-<span class="text-xs font-semibold text-primary">Fase Rentan: HST 40–75</span>
-<button class="text-secondary font-label-sm text-label-sm font-bold hover:underline flex items-center" onclick="triggerPresetDiagnosis('karat')" type="button">
-<span>Uji Diagnosa AI</span>
-<span class="material-symbols-outlined text-[16px] ml-0.5">arrow_forward</span>
+<div class="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-surface-container-high pt-4">
+<span class="inline-flex items-center gap-1.5 rounded-full bg-surface-container-low px-3 py-2 text-xs font-semibold text-on-surface-variant"><span class="material-symbols-outlined text-base text-secondary" aria-hidden="true">schedule</span>HST 40–75</span>
+<button class="inline-flex items-center gap-1.5 rounded-full bg-primary px-3.5 py-2.5 text-xs font-bold text-white transition hover:bg-primary-container focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" onclick="triggerPresetDiagnosis('karat')" type="button">
+<span>Uji dengan AI</span>
+<span class="material-symbols-outlined text-base transition-transform group-hover:translate-x-0.5" aria-hidden="true">arrow_forward</span>
 </button>
 </div>
 </div>
 </div>
 <!-- Card 4: Ulat Grayak (FAW) -->
-<div class="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col border border-surface-container-high">
-<div class="relative h-48 w-full overflow-hidden bg-surface-container">
+<div class="group flex h-full flex-col overflow-hidden rounded-3xl border border-surface-container-high bg-surface-container-lowest shadow-sm transition duration-300 hover:-translate-y-1 hover:border-primary/20 hover:shadow-xl">
+<div class="relative h-52 w-full overflow-hidden bg-surface-container sm:h-56">
 <img class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" data-alt="Fall armyworm caterpillar eating young corn whorl leaving ragged holes and frass" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDoDrtX1133LbY1YD3ukd9U2GYlo_rcGoa-rBQp4Ty-QTzDLD5h_5nQnqCMM4rZI7q0hreyuUV-uXelZ0YchOh5Q3CVT776LG8qtIqkt9wPkjF9Xbh2IC1cydOlGnMn04cwRbWyLenAFCnjx8P5VntotuPK61Bl3UPgw7F0iDuCqLPYjQ1701J0DM3itBIBx5fykpJfqYtkEP3pJ-JuUL484ltmtEA_dkhMCwSYtUtVMH68rVKpHtia"/>
-<span class="absolute top-3 left-3 bg-error text-on-error text-xs font-bold px-2.5 py-1 rounded-md">Risiko: Sangat Cepat &amp; Masif</span>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/55 via-transparent to-black/10"></div>
+<span class="absolute right-3 top-3 rounded-full bg-error/95 px-3 py-1.5 text-[11px] font-bold text-on-error shadow-lg backdrop-blur">Menyebar cepat</span>
+<span class="absolute bottom-3 left-4 inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-primary/65 px-3 py-1.5 text-[11px] font-semibold text-white backdrop-blur"><span class="material-symbols-outlined text-sm" aria-hidden="true">pest_control</span>Hama</span>
 </div>
-<div class="p-space-md flex-1 flex flex-col justify-between">
+<div class="flex flex-1 flex-col justify-between p-5">
 <div>
 <span class="text-[11px] font-bold text-secondary uppercase tracking-wider">Hama Invasif Lepidoptera</span>
-<h3 class="font-headline-sm text-headline-sm text-primary font-bold mt-0.5 mb-1">Ulat Grayak (FAW)</h3>
-<p class="text-xs font-serif italic text-outline mb-2">Spodoptera frugiperda</p>
-<p class="font-body-sm text-body-sm text-on-surface-variant">
+<h3 class="mt-1 font-headline-sm text-headline-sm font-bold text-primary">Ulat Grayak (FAW)</h3>
+<p class="mb-3 mt-1 text-xs font-serif italic text-outline">Spodoptera frugiperda</p>
+<p class="font-body-sm text-body-sm leading-6 text-on-surface-variant">
                     Larva memakan pucuk daun muda dan titik tumbuh tanaman, meninggalkan serbuk gerek kasar mirip serbuk gergaji dan lubang koyak besar.
                   </p>
 </div>
-<div class="mt-4 pt-3 border-t border-surface-container-high flex items-center justify-between">
-<span class="text-xs font-semibold text-primary">Fase Rentan: HST 15–50</span>
-<button class="text-secondary font-label-sm text-label-sm font-bold hover:underline flex items-center" onclick="triggerPresetDiagnosis('ulat')" type="button">
-<span>Uji Diagnosa AI</span>
-<span class="material-symbols-outlined text-[16px] ml-0.5">arrow_forward</span>
+<div class="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-surface-container-high pt-4">
+<span class="inline-flex items-center gap-1.5 rounded-full bg-surface-container-low px-3 py-2 text-xs font-semibold text-on-surface-variant"><span class="material-symbols-outlined text-base text-secondary" aria-hidden="true">schedule</span>HST 15–50</span>
+<button class="inline-flex items-center gap-1.5 rounded-full bg-primary px-3.5 py-2.5 text-xs font-bold text-white transition hover:bg-primary-container focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" onclick="triggerPresetDiagnosis('ulat')" type="button">
+<span>Uji dengan AI</span>
+<span class="material-symbols-outlined text-base transition-transform group-hover:translate-x-0.5" aria-hidden="true">arrow_forward</span>
 </button>
+</div>
 </div>
 </div>
 </div>

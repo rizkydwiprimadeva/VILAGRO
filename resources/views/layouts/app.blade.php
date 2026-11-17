@@ -6,6 +6,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <meta name="shell-type" content="web_standard" />
     <title>@yield('title', 'VILAGRO AI - Deteksi Cepat Penyakit & Hama Tanaman Jagung')</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/logo-symbol.png') }}" />
+    <link rel="apple-touch-icon" href="{{ asset('images/logo-symbol.png') }}" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -19,7 +21,7 @@
 
     @include('partials.header')
 
-    <main class="w-full pt-20 bg-background min-h-screen">
+    <main @class(['w-full min-h-screen bg-background', 'pt-20' => ! request()->routeIs('home')])>
         @yield('content')
     </main>
 

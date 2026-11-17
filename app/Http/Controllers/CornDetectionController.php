@@ -2,196 +2,93 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCornScanRequest;
+use App\Models\DiseaseReport;
+use App\Services\CornDiseaseDetector;
+use App\Services\NotifyNearbyFarmers;
 use Illuminate\Http\Client\ConnectionException;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Client\RequestException;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use UnexpectedValueException;
 
 class CornDetectionController extends Controller
 {
-    /**
-     * URL Python AI microservice.
-     */
-    protected string $aiServiceUrl;
+    public function __construct(
+        private CornDiseaseDetector $detector,
+        private NotifyNearbyFarmers $nearbyFarmers,
+    ) {}
 
-    public function __construct()
+    public function detect(StoreCornScanRequest $request): RedirectResponse
     {
-        $this->aiServiceUrl = config('services.ai.url', 'http://127.0.0.1:5001');
-    }
-
-    /**
-     * Halaman utama scanner.
-     */
-    public function index()
-    {
-        return view('home');
-    }
-
-    /**
-     * Proses deteksi gambar.
-     */
-    public function detect(Request $request)
-    {
-        $request->validate([
-            'image' => 'required|image|mimes:jpeg,png,jpg,webp|max:10240',
-        ], [
-            'image.required' => 'Silakan unggah gambar terlebih dahulu.',
-            'image.image' => 'File harus berupa gambar.',
-            'image.max' => 'Ukuran gambar maksimal 10MB.',
-        ]);
-
         try {
-            $image = $request->file('image');
-            $conf = (float) config('services.ai.inference_confidence', 0.25);
-
-            $response = Http::timeout(120)
-                ->attach(
-                    'image',
-                    file_get_contents($image->getRealPath()),
-                    $image->getClientOriginalName()
-                )
-                ->post("{$this->aiServiceUrl}/predict", [
-                    'conf' => $conf,
-                ]);
-
-            if (! $response->successful()) {
-                Log::error('AI service error', ['body' => $response->body()]);
-
-                return back()->with('error', 'AI service gagal merespons: '.$response->status());
-            }
-
-            $result = $response->json();
-
-            // Enrich dengan info dari config (nama latin, gejala, SOP)
-            $result['enriched'] = $this->enrichResult($result['detections'] ?? []);
-
-            return view('home', [
-                'result' => $result,
+            $result = $this->detector->detect($request->file('image'));
+        } catch (ConnectionException|RequestException $exception) {
+            Log::warning('Corn AI service request failed.', [
+                'user_id' => $request->user()->id,
+                'exception' => $exception->getMessage(),
             ]);
 
-        } catch (ConnectionException $e) {
-            Log::error('AI connection failed: '.$e->getMessage());
+            return back()
+                ->withInput()
+                ->withErrors(['image' => 'Layanan AI belum dapat dihubungi. Pastikan Python service berjalan di port 5001, lalu coba lagi.']);
+        } catch (UnexpectedValueException $exception) {
+            Log::error('Corn AI service returned an invalid result.', [
+                'user_id' => $request->user()->id,
+                'exception' => $exception->getMessage(),
+            ]);
 
-            return back()->with('error', 'Tidak dapat terhubung ke AI service. Pastikan Python service sudah berjalan di port 5001.');
-        } catch (\Exception $e) {
-            Log::error('Detection error: '.$e->getMessage());
-
-            return back()->with('error', 'Terjadi kesalahan: '.$e->getMessage());
-        }
-    }
-
-    /**
-     * Enrich hasil deteksi dengan data gejala, latin name, dan SOP treatment.
-     */
-    protected function enrichResult(array $detections): array
-    {
-        $diseaseDb = config('corn_diseases');
-        $minConfidence = (float) config('services.ai.minimum_confidence', 0.65);
-        $detections = array_values(array_filter($detections, static function ($detection) {
-            return isset($detection['class_name'], $detection['confidence'])
-                && is_string($detection['class_name'])
-                && is_numeric($detection['confidence']);
-        }));
-
-        if (empty($detections)) {
-            return [
-                'status' => 'no_detection',
-                'disease' => [
-                    'indonesian_name' => 'Belum Teridentifikasi',
-                    'pathogen_latin' => '—',
-                    'symptoms' => 'Model tidak menemukan penyakit yang dikenali. Ini bukan konfirmasi bahwa tanaman sehat atau bahwa gambar sesuai dengan objek yang didukung.',
-                    'treatments' => [
-                        'Pastikan foto menampilkan tanaman jagung dengan jelas dan area gejala terlihat fokus.',
-                        'Ambil foto ulang dengan pencahayaan cukup dan hindari latar yang terlalu ramai.',
-                    ],
-                ],
-                'confidence' => null,
-                'total' => 0,
-                'all' => [],
-            ];
+            return back()
+                ->withInput()
+                ->withErrors(['image' => 'Layanan AI mengembalikan hasil yang tidak valid. Coba lagi atau ambil foto baru.']);
         }
 
-        usort($detections, static fn ($a, $b) => (float) $b['confidence'] <=> (float) $a['confidence']);
-        $top = $detections[0];
-        $className = (string) $top['class_name'];
-        $confidence = (float) $top['confidence'];
-        $info = $diseaseDb[$className] ?? null;
+        $imagePath = $request->file('image')->store('disease-reports', 'local');
 
-        if ($confidence < $minConfidence || $info === null) {
-            $candidateName = $info['indonesian_name'] ?? 'kelas yang belum dipetakan';
+        if ($imagePath === false) {
+            Log::error('Corn scan image could not be stored.', ['user_id' => $request->user()->id]);
 
-            return [
-                'status' => 'uncertain',
-                'disease' => [
-                    'indonesian_name' => $info ? 'Kandidat: '.$candidateName : 'Perlu Foto Ulang',
-                    'pathogen_latin' => $info['pathogen_latin'] ?? '—',
-                    'symptoms' => $info
-                        ? 'Model mendeteksi kandidat '.$candidateName.' dengan skor '.round($confidence * 100, 1).'%, di bawah ambang identifikasi '.round($minConfidence * 100).'%. Hasil ini belum cukup pasti untuk menjadi diagnosis.'
-                        : 'Model menghasilkan kelas yang belum memiliki keterangan penyakit di aplikasi. Periksa kembali foto atau perbarui mapping kelas model.',
-                    'treatments' => [
-                        'Ambil foto ulang dengan jarak 15–30 cm dan fokuskan pada area gejala.',
-                        'Pastikan pencahayaan cukup dan tanaman jagung memenuhi sebagian besar gambar.',
-                    ],
-                ],
-                'confidence' => round($confidence * 100, 2),
-                'class_name' => $className,
-                'total' => count($detections),
-                'all' => $detections,
-            ];
+            return back()
+                ->withInput()
+                ->withErrors(['image' => 'Foto tidak dapat disimpan. Silakan coba lagi.']);
         }
 
-        return [
-            'status' => 'infected',
-            'disease' => $info,
-            'confidence' => round($confidence * 100, 2),
-            'class_name' => $className,
-            'total' => count($detections),
-            'all' => $detections,
-        ];
-    }
+        [$report, $recipientCount] = DB::transaction(function () use ($request, $result, $imagePath): array {
+            $report = $request->user()->diseaseReports()->create([
+                'disease_class' => $result['disease_class'],
+                'disease_name' => $result['disease_name'],
+                'status' => $result['status'],
+                'confidence' => $result['confidence'],
+                'image_path' => $imagePath,
+                'latitude' => $request->validated('latitude'),
+                'longitude' => $request->validated('longitude'),
+                'location_consent_at' => now(),
+            ]);
 
-    /**
-     * Halaman metrik training.
-     */
-    public function metrics()
-    {
-        $modelPath = storage_path('app/ai-model');
+            $recipientCount = $this->nearbyFarmers->notify($report);
 
-        // Parse results.csv
-        $metrics = [];
-        $csvPath = "{$modelPath}/results.csv";
-        if (file_exists($csvPath)) {
-            $handle = fopen($csvPath, 'r');
-            $headers = fgetcsv($handle);
-            while (($row = fgetcsv($handle)) !== false) {
-                if (count($row) === count($headers)) {
-                    $metrics[] = array_combine($headers, $row);
-                }
-            }
-            fclose($handle);
-        }
+            return [$report, $recipientCount];
+        });
 
-        $charts = [
-            'F1-Confidence Curve' => 'F1_curve.png',
-            'Precision-Recall Curve' => 'PR_curve.png',
-            'Precision-Confidence' => 'P_curve.png',
-            'Recall-Confidence' => 'R_curve.png',
-            'Confusion Matrix' => 'confusion_matrix.png',
-            'Confusion Matrix (Norm)' => 'confusion_matrix_normalized.png',
-            'Label Distribution' => 'labels.jpg',
+        $flashResult = [
+            ...$result,
+            'report_id' => $report->id,
+            'recipient_count' => $recipientCount,
         ];
 
-        return view('corn-detection.metrics', compact('metrics', 'charts'));
-    }
+        if ($result['status'] === 'infected') {
+            $message = $recipientCount > 0
+                ? "Laporan tersimpan dan peringatan dikirim ke {$recipientCount} petani dalam radius 5 km."
+                : 'Laporan tersimpan, tetapi belum ada petani lain dalam radius 5 km yang mengaktifkan notifikasi.';
+        } else {
+            $message = 'Hasil scan tersimpan. Tidak ada notifikasi penyakit yang dikirim.';
+        }
 
-    /**
-     * Serve file gambar dari storage/app/ai-model.
-     */
-    public function showChart(string $filename)
-    {
-        $path = storage_path("app/ai-model/{$filename}");
-        abort_unless(file_exists($path), 404);
-
-        return response()->file($path);
+        return redirect()
+            ->route('scanner')
+            ->with('scan_result', $flashResult)
+            ->with('scan_message', $message);
     }
 }
